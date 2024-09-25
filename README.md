@@ -1,1 +1,3 @@
-# KT-Doubly-Linked-List
+# Task: Implement a Doubly Linked List in Java
+
+Your task is to implement a **Doubly Linked List (DLL)** data structure in Java. A Doubly Linked List allows traversal in both forward and backward directions, making it efficient for operations like insertion and deletion of elements. You will need to implement the required methods and provide unit tests to ensure the correctness of your implementation.
