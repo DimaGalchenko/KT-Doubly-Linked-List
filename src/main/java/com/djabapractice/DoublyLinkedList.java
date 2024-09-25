@@ -7,6 +7,10 @@ public class DoublyLinkedList<K, V> {
      * pointers to the previous and next nodes in the linked list.
      */
     public static class Node<K, V> {
+        private K key;
+        private V value;
+        private Node<K, V> next;
+        private Node<K, V> prev;
 
         /**
          * Constructor to create a new node with a given key and value.
@@ -15,40 +19,47 @@ public class DoublyLinkedList<K, V> {
          * @param value the value of the node
          */
         public Node(K key, V value) {
-
+            this.key = key;
+            this.value = value;
+            this.next = null;
+            this.prev = null;
         }
 
         /**
          * Default constructor for creating head or tail dummy nodes.
          */
         public Node() {
-
+            this(null, null);
         }
 
-        // Getter methods for key and value (for testing and usage)
         public K getKey() {
-            throw new RuntimeException("Not implemented");
+            return key;
         }
 
         public V getValue() {
-            throw new RuntimeException("Not implemented");
+            return value;
         }
 
         public Node<K, V> getNext() {
-            throw new RuntimeException("Not implemented");
+            return next;
         }
 
         public Node<K, V> getPrev() {
-            throw new RuntimeException("Not implemented");
+            return prev;
         }
     }
 
+    private final Node<K, V> head;
+    private final Node<K, V> tail;
 
     /**
      * Constructs an empty DoublyLinkedList with dummy head and tail nodes.
      */
     public DoublyLinkedList() {
-
+        this.head = new Node<>(); // Dummy head
+        this.tail = new Node<>(); // Dummy tail
+        head.next = tail;
+        tail.prev = head;
     }
 
     /**
@@ -57,7 +68,18 @@ public class DoublyLinkedList<K, V> {
      * @param node the node to be removed
      */
     public void removeNode(Node<K, V> node) {
+        if (node == null || node == head || node == tail) {
+            return; // Can't remove head or tail dummy nodes
+        }
 
+        Node<K, V> prevNode = node.prev;
+        Node<K, V> nextNode = node.next;
+
+        prevNode.next = nextNode;
+        nextNode.prev = prevNode;
+
+        node.prev = null;
+        node.next = null;
     }
 
     /**
@@ -66,7 +88,11 @@ public class DoublyLinkedList<K, V> {
      * @param node the node to be added
      */
     public void addToFront(Node<K, V> node) {
+        node.next = head.next;
+        node.prev = head;
 
+        head.next.prev = node;
+        head.next = node;
     }
 
     /**
@@ -75,7 +101,7 @@ public class DoublyLinkedList<K, V> {
      * @return true if the list is empty, false otherwise
      */
     public boolean isEmpty() {
-        throw new RuntimeException("Not implemented");
+        return head.next == tail;
     }
 
     /**
@@ -84,15 +110,21 @@ public class DoublyLinkedList<K, V> {
      * @return the last node in the list, or null if the list is empty
      */
     public Node<K, V> removeLast() {
-        throw new RuntimeException("Not implemented");
+        if (isEmpty()) {
+            return null;
+        }
+
+        Node<K, V> lastNode = tail.prev;
+        removeNode(lastNode);
+        return lastNode;
     }
 
     // Getter methods for head and tail for testing purposes
     public Node<K, V> getHead() {
-        throw new RuntimeException("Not implemented");
+        return head;
     }
 
     public Node<K, V> getTail() {
-        throw new RuntimeException("Not implemented");
+        return tail;
     }
 }
